@@ -19,4 +19,12 @@ export const Header = styled('header', {
         fontSize: '1.5rem',
         letterSpacing: '0.08rem',
     },
+
+    '@media (max-height: 650px)': {
+        padding: '1rem 1.5rem',
+    },
+
+    '@media (max-width: 600px)': {
+        padding: '1.25rem',
+    },
 })

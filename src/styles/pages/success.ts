@@ -51,7 +51,24 @@ export const SuccessContainer = styled('main', {
     '&:hover': {
       color: '$green300',
     }
-  }
+  },
+
+  '@media (max-height: 650px)': {
+    height: 'calc(100svh - 4.5rem)',
+    padding: '1rem',
+
+    p: {
+      marginTop: '1rem',
+    },
+
+    '.autoCloseNotice': {
+      marginTop: '1rem',
+    },
+
+    a: {
+      marginTop: '1.5rem',
+    },
+  },
 });
 
 export const ImageContainer = styled('div', {
@@ -70,5 +87,10 @@ export const ImageContainer = styled('div', {
 
   img: {
     objectFit: 'cover',
-  }
+  },
+
+  '@media (max-height: 650px)': {
+    marginTop: '1.5rem',
+    height: 110,
+  },
 });
