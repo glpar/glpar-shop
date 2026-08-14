@@ -1,4 +1,5 @@
 import {styled} from '..';
+import Link from 'next/link';
 
 export const HomeContainer = styled('main', {
     display: 'flex',
@@ -12,12 +13,13 @@ export const HomeContainer = styled('main', {
     },
 });
 
-export const Product = styled('div', {
+export const Product = styled(Link, {
     background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
     borderRadius: 8,
     cursor: 'pointer',
     position: 'relative',
     overflow: 'hidden',
+    textDecoration: 'none',
 
     display: 'flex',
     alignItems: 'center',
@@ -70,6 +72,22 @@ export const Product = styled('div', {
     '@media (max-height: 650px)': {
         footer: {
             padding: '1.25rem',
+        },
+    },
+
+    '@media (hover: none)': {
+        footer: {
+            transform: 'translateY(0%)',
+            opacity: 1,
+            padding: '1rem',
+        },
+    },
+
+    '@media (max-width: 600px)': {
+        footer: {
+            transform: 'translateY(0%)',
+            opacity: 1,
+            padding: '1rem',
         },
     },
 });
