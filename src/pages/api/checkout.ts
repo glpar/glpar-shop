@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const {priceId} = req.body;
+  const {priceId, openInNewTab} = req.body;
 
   if(typeof priceId !== 'string') {
     return res.status(400).json({ error: 'Price not found.' });
@@ -18,7 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Application URL is not configured.' });
   }
 
-  const successUrl = `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
+  const autoCloseParam = openInNewTab === true ? '&auto_close=true' : '';
+  const successUrl = `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}${autoCloseParam}`;
   const cancelUrl = `${siteUrl}/`;
 
   const checkoutSession = await stripe.checkout.sessions.create ({

@@ -35,6 +35,7 @@ export default function Product({ product }: ProductProps) {
 
       const response = await axios.post('/api/checkout', {
         priceId: product.defaultPriceId,
+        openInNewTab: isEmbedded,
       })
 
       const { checkoutUrl } = response.data;

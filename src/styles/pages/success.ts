@@ -22,6 +22,24 @@ export const SuccessContainer = styled('main', {
     lineHeight: 1.4,
   },
 
+  '.autoCloseNotice': {
+    marginTop: '2rem',
+    textAlign: 'center',
+
+    p: {
+      marginTop: 0,
+      fontSize: '$lg',
+      color: '$gray100',
+    },
+
+    span: {
+      display: 'block',
+      marginTop: '0.5rem',
+      fontSize: '$md',
+      color: '$gray300',
+    },
+  },
+
   a: {
     display: 'block',
     marginTop: '5rem',
