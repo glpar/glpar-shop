@@ -23,10 +23,28 @@ export default function Product({ product }: ProductProps) {
 
   async function handleBuyProduct() {
     const isEmbedded = window.self !== window.top;
-    const checkoutWindow = isEmbedded ? window.open('', '_blank') : null;
 
-    if (isEmbedded && !checkoutWindow) {
-      alert('Permita a abertura de uma nova aba para acessar o checkout.');
+    if (isEmbedded) {
+      const form = document.createElement('form');
+      const priceIdInput = document.createElement('input');
+      const openInNewTabInput = document.createElement('input');
+
+      form.method = 'POST';
+      form.action = '/api/checkout';
+      form.target = '_blank';
+      form.rel = 'noopener';
+      form.style.display = 'none';
+
+      priceIdInput.name = 'priceId';
+      priceIdInput.value = product.defaultPriceId;
+
+      openInNewTabInput.name = 'openInNewTab';
+      openInNewTabInput.value = 'true';
+
+      form.append(priceIdInput, openInNewTabInput);
+      document.body.appendChild(form);
+      form.submit();
+      form.remove();
       return;
     }
 
@@ -35,21 +53,14 @@ export default function Product({ product }: ProductProps) {
 
       const response = await axios.post('/api/checkout', {
         priceId: product.defaultPriceId,
-        openInNewTab: isEmbedded,
       })
 
       const { checkoutUrl } = response.data;
 
-      if (checkoutWindow) {
-        checkoutWindow.opener = null;
-        checkoutWindow.location.href = checkoutUrl;
-      } else {
-        window.location.href = checkoutUrl;
-      }
+      window.location.href = checkoutUrl;
     }
     catch (err) {
       // Conectar com uma ferramenta de observabilidade (Datadog / Sentry)
-      checkoutWindow?.close();
       setIsCreatingCheckoutSession(false);
       alert ('Falha ao direcionar ao Checkout!')
     }

@@ -7,6 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const {priceId, openInNewTab} = req.body;
+  const shouldOpenInNewTab = openInNewTab === true || openInNewTab === 'true';
 
   if(typeof priceId !== 'string') {
     return res.status(400).json({ error: 'Price not found.' });
@@ -18,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Application URL is not configured.' });
   }
 
-  const autoCloseParam = openInNewTab === true ? '&auto_close=true' : '';
+  const autoCloseParam = shouldOpenInNewTab ? '&auto_close=true' : '';
   const successUrl = `${siteUrl}/success?session_id={CHECKOUT_SESSION_ID}${autoCloseParam}`;
   const cancelUrl = `${siteUrl}/`;
 
@@ -33,6 +34,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     ]
   })
+
+  if (!checkoutSession.url) {
+    return res.status(500).json({ error: 'Checkout URL was not created.' });
+  }
+
+  if (shouldOpenInNewTab) {
+    return res.redirect(303, checkoutSession.url);
+  }
 
   return res.status(201).json({
     checkoutUrl: checkoutSession.url,
