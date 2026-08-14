@@ -22,6 +22,14 @@ export default function Product({ product }: ProductProps) {
   const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
   async function handleBuyProduct() {
+    const isEmbedded = window.self !== window.top;
+    const checkoutWindow = isEmbedded ? window.open('', '_blank') : null;
+
+    if (isEmbedded && !checkoutWindow) {
+      alert('Permita a abertura de uma nova aba para acessar o checkout.');
+      return;
+    }
+
     try {
       setIsCreatingCheckoutSession(true);
 
@@ -31,10 +39,16 @@ export default function Product({ product }: ProductProps) {
 
       const { checkoutUrl } = response.data;
 
-      window.location.href = checkoutUrl
+      if (checkoutWindow) {
+        checkoutWindow.opener = null;
+        checkoutWindow.location.href = checkoutUrl;
+      } else {
+        window.location.href = checkoutUrl;
+      }
     }
     catch (err) {
       // Conectar com uma ferramenta de observabilidade (Datadog / Sentry)
+      checkoutWindow?.close();
       setIsCreatingCheckoutSession(false);
       alert ('Falha ao direcionar ao Checkout!')
     }
