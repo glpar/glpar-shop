@@ -5,6 +5,7 @@ Loja virtual de camisetas construída com Next.js e integrada ao Stripe. O proje
 ## Funcionalidades
 
 - catálogo de produtos carregado do Stripe;
+- uso automático dos produtos ativos e de seus preços padrão;
 - carrossel de produtos;
 - página de detalhes de cada item;
 - checkout hospedado pelo Stripe;
@@ -39,6 +40,8 @@ NEXT_URL=http://localhost:3000
 
 Nunca publique a chave secreta do Stripe.
 
+Os produtos não ficam gravados no código. O catálogo é carregado automaticamente da conta Stripe vinculada pela `STRIPE_SECRET_KEY`. Cada produto ativo precisa ter imagem e preço padrão.
+
 ## Como executar e usar
 
 ```bash
@@ -54,6 +57,6 @@ Abra `http://localhost:3000`, escolha um produto, acesse seus detalhes e clique 
 - `npm start`: executa o build;
 - `npm run lint`: verifica o código.
 
-## Observação sobre o build
+## Integração com o Stripe
 
-A geração das páginas consulta produtos do Stripe. Portanto, `npm run build` também precisa receber uma `STRIPE_SECRET_KEY` válida e produtos configurados na conta.
+A geração das páginas consulta produtos do Stripe. Portanto, `npm run build` também precisa receber uma `STRIPE_SECRET_KEY` válida. Os detalhes dos produtos são gerados sob demanda, evitando IDs de produtos fixos no código.
